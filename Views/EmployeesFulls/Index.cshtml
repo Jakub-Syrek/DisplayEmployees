@@ -25,6 +25,10 @@
 
         });
     });
+
+    $(function () {
+            $("#startDate").datepicker()
+        });
     </script>
 
 
@@ -33,6 +37,7 @@
 
 @using (Html.BeginForm())
 {
+    <b>Start Date: </b>
     @Html.TextBox("startDate", null, new { id = "startDate" })
 
     <select asp-for="startDate" input type="submit" Text="startDate" value="startDate" id="btn2" />
@@ -41,7 +46,7 @@
         @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
         <input type="submit" value="Search" />
     </div>
-    <b>Start Date: </b>
+
 
 
 
