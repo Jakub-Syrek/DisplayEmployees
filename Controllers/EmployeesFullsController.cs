@@ -51,7 +51,7 @@ namespace DisplayEmployees.Controllers
             return View(lista);
         }
         [HttpPost]
-        public async Task<ActionResult> Index(string? searchTerm , string? startDate , string? reportingToId)
+        public async Task<ActionResult> Index(string? searchTerm , string? startDate , string? startDate1, string? reportingToId)
         {
                 var listOFManagers = new List<string>();
 
@@ -63,7 +63,7 @@ namespace DisplayEmployees.Controllers
                 ViewBag.reportingToId = new SelectList(listOFManagers);
 
 
-                if (string.IsNullOrEmpty(searchTerm) && string.IsNullOrEmpty(startDate) && (string.IsNullOrEmpty(reportingToId)))
+                if (string.IsNullOrEmpty(searchTerm) && string.IsNullOrEmpty(startDate) && (string.IsNullOrEmpty(reportingToId)) && (string.IsNullOrEmpty(startDate1)))
                 {
                 lista = await db.EmployeesFulls.ToListAsync();                
                 }
@@ -71,16 +71,22 @@ namespace DisplayEmployees.Controllers
                 {
                 lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
                 }
-                else if (string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && (string.IsNullOrEmpty(reportingToId)))
+                else if (string.IsNullOrEmpty(searchTerm) && ((!string.IsNullOrEmpty(startDate) || (!string.IsNullOrEmpty(startDate1))) && (string.IsNullOrEmpty(reportingToId))))
                 {
-                DateTime date = DateTime.Parse(startDate);
-                lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();
+                
+                DateTime date = new DateTime();             
+                DateTime date1 = new DateTime();
+                DateTime.TryParse(startDate1, out date1);
+                DateTime.TryParse(startDate, out date);              
+                lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date ).ToListAsync();
+                lista = lista.Where(l => l.JoiningDate > date1).ToList();
+
                 }
                 else if (string.IsNullOrEmpty(searchTerm) && (string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(reportingToId)))
                 {
                 lista = await db.EmployeesFulls.Where(x => x.ReportingToID.ToString() == reportingToId).ToListAsync();
                 }
-                else if (!string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && (string.IsNullOrEmpty(reportingToId)))
+                else if (!string.IsNullOrEmpty(searchTerm) && ((!string.IsNullOrEmpty(startDate) || (!string.IsNullOrEmpty(startDate1))) && (string.IsNullOrEmpty(reportingToId))))
                 {                
                 lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();                
                 }
@@ -88,34 +94,21 @@ namespace DisplayEmployees.Controllers
                 {
                 lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
                 }
-                else if ((string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(reportingToId))))
+                else if ((string.IsNullOrEmpty(searchTerm) && ((!string.IsNullOrEmpty(startDate) || (!string.IsNullOrEmpty(startDate1))) && (!string.IsNullOrEmpty(reportingToId)))))
                 {
-                DateTime date = DateTime.Parse(startDate);
+                DateTime date = new DateTime();
+                DateTime date1 = new DateTime();
+                DateTime.TryParse(startDate1, out date1);
+                DateTime.TryParse(startDate, out date);
                 lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();
+                lista = lista.Where(l => l.JoiningDate > date1).ToList();
                 lista = lista.Where(x => x.ReportingToID.ToString() == reportingToId).ToList();
                 }
                 else if (!string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && !(string.IsNullOrEmpty(reportingToId)))
                 {
                 lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
                 }
-                /*
-                if (string.IsNullOrEmpty(startDate))
-                {
-                  //lista = await db.EmployeesFulls.ToListAsync();
-                }
-                else
-                {
-                DateTime date = DateTime.Parse(startDate);
-                lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();                
-                }
-                if (string.IsNullOrEmpty(reportingToId ))
-                {                
-                }
-                else
-                {                
-                lista = await db.EmployeesFulls.Where(x => x.ReportingToID.ToString() == reportingToId).ToListAsync();
-                }
-                */
+                
             return View(lista);
          
         }

@@ -25,12 +25,12 @@
 
         });
     });
-        $("#startDate").click(function ()
-        {
-          $("input[type=text]").val("");
-        });
+       
     $(function () {
             $("#startDate").datepicker()
+    });
+        $(function () {
+            $("#startDate1").datepicker()
     });
     $(document).ready(function () {
             $("#btn2").click(function () {
@@ -63,13 +63,15 @@
 {
 <p>
     <br /><br />
+    Show  employees who started after: @Html.TextBox("startDate1", null, new { id = "startDate1" })
     Show  employees who started before: @Html.TextBox("startDate", null, new { id = "startDate" })
+
     <input type="submit" value="Filter" />
     <br /><br />
     Search for  employee  by  FullName: @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
     <input type="submit" value="Search" />
     <br /><br />
-    Show  employees  reporting  to  ID:  @Html.DropDownList("reportingToId", "All" )
+    Show  employees  reporting  to  ID:  @Html.DropDownList("reportingToId", "All")
     <input type="submit" value="Filter" />
 </p>
 }

@@ -24,9 +24,9 @@ namespace DisplayEmployees
                 defaults: new { controller = "EmployeesFulls", action = "Index", startDate = UrlParameter.Optional, searchTerm = UrlParameter.Optional }
             );
             routes.MapRoute(
-                name: "about",
-                url: "{controller}/{about}/{id}",
-                defaults: new { controller = "EmployeesFulls", action = "About", startDate = UrlParameter.Optional, searchTerm = UrlParameter.Optional }
+                name: "IndexThreeParametrs",
+                url: "{controller}/{startDate}/{startDate1}/{searchTerm}",
+                defaults: new { controller = "EmployeesFulls", action = "About", startDate = UrlParameter.Optional, startDate1 = UrlParameter.Optional, searchTerm = UrlParameter.Optional }
             );
 
             routes.MapRoute(
