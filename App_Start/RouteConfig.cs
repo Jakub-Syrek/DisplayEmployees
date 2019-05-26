@@ -23,8 +23,12 @@ namespace DisplayEmployees
                 url: "{controller}/{startDate}/{searchTerm}",
                 defaults: new { controller = "EmployeesFulls", action = "Index", startDate = UrlParameter.Optional, searchTerm = UrlParameter.Optional }
             );
-            
-            
+            routes.MapRoute(
+                name: "about",
+                url: "{controller}/{about}/{id}",
+                defaults: new { controller = "EmployeesFulls", action = "About", startDate = UrlParameter.Optional, searchTerm = UrlParameter.Optional }
+            );
+
             routes.MapRoute(
                 name: "SortByDate",
                 url: "{controller}/{FilterOutTableAfterDate}/{startDate}",

@@ -14,7 +14,7 @@ namespace DisplayEmployees.Controllers
     public class EmployeesFullsController : Controller
     {
         private Firma1Entities2 db = new Firma1Entities2();
-        List<EmployeesFull> lista = new List<EmployeesFull>();
+        private List<EmployeesFull> lista = new List<EmployeesFull>();
         
         /*
         // GET: EmployeesFulls
@@ -63,17 +63,42 @@ namespace DisplayEmployees.Controllers
                 ViewBag.reportingToId = new SelectList(listOFManagers);
 
 
-                if (string.IsNullOrEmpty(searchTerm))
+                if (string.IsNullOrEmpty(searchTerm) && string.IsNullOrEmpty(startDate) && (string.IsNullOrEmpty(reportingToId)))
                 {
-                    lista = await db.EmployeesFulls.ToListAsync();
-                
+                lista = await db.EmployeesFulls.ToListAsync();                
                 }
-                else
+                else if (!string.IsNullOrEmpty(searchTerm) && string.IsNullOrEmpty(startDate) && (string.IsNullOrEmpty(reportingToId)))
                 {
-                    lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
+                lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
                 }
-
-               
+                else if (string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && (string.IsNullOrEmpty(reportingToId)))
+                {
+                DateTime date = DateTime.Parse(startDate);
+                lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();
+                }
+                else if (string.IsNullOrEmpty(searchTerm) && (string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(reportingToId)))
+                {
+                lista = await db.EmployeesFulls.Where(x => x.ReportingToID.ToString() == reportingToId).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && (string.IsNullOrEmpty(reportingToId)))
+                {                
+                lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();                
+                }
+                else if ((!string.IsNullOrEmpty(searchTerm) && (string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(reportingToId))))
+                {
+                lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
+                }
+                else if ((string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(reportingToId))))
+                {
+                DateTime date = DateTime.Parse(startDate);
+                lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();
+                lista = lista.Where(x => x.ReportingToID.ToString() == reportingToId).ToList();
+                }
+                else if (!string.IsNullOrEmpty(searchTerm) && (!string.IsNullOrEmpty(startDate)) && !(string.IsNullOrEmpty(reportingToId)))
+                {
+                lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
+                }
+                /*
                 if (string.IsNullOrEmpty(startDate))
                 {
                   //lista = await db.EmployeesFulls.ToListAsync();
@@ -83,16 +108,14 @@ namespace DisplayEmployees.Controllers
                 DateTime date = DateTime.Parse(startDate);
                 lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();                
                 }
-
                 if (string.IsNullOrEmpty(reportingToId ))
-                {
-                
+                {                
                 }
                 else
-                {
-                
+                {                
                 lista = await db.EmployeesFulls.Where(x => x.ReportingToID.ToString() == reportingToId).ToListAsync();
                 }
+                */
             return View(lista);
          
         }
@@ -212,21 +235,6 @@ namespace DisplayEmployees.Controllers
             }
             base.Dispose(disposing);
         }
-        [HttpPost]
-        public ViewResult FilterOutTableAfterDate(DateTime date)
-        {            
-                if (date != null)
-                {
-
-                    lista = db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToList();
-
-                }
-                else
-                {
-                    lista = db.EmployeesFulls.ToList();
-                }
-
-                return View(lista);            
-        }
+       
     }
 }

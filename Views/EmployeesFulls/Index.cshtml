@@ -25,7 +25,10 @@
 
         });
     });
-
+        $("#startDate").click(function ()
+        {
+          $("input[type=text]").val("");
+        });
     $(function () {
             $("#startDate").datepicker()
     });
@@ -59,16 +62,13 @@
 @using (Html.BeginForm("Index", "EmployeesFulls"))
 {
 <p>
-    <br />
+    <br /><br />
     Show  employees who started before: @Html.TextBox("startDate", null, new { id = "startDate" })
     <input type="submit" value="Filter" />
-    <br />
+    <br /><br />
     Search for  employee  by  FullName: @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
     <input type="submit" value="Search" />
-    <br />
-
-   
-
+    <br /><br />
     Show  employees  reporting  to  ID:  @Html.DropDownList("reportingToId", "All" )
     <input type="submit" value="Filter" />
 </p>
@@ -95,7 +95,7 @@
 
     @foreach (var item in Model)
     {
-<tr>
+      <tr>
     <td>
         @Html.DisplayFor(modelItem => item.ID)
     </td>

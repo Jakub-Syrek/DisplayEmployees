@@ -12,19 +12,7 @@ namespace DisplayEmployees.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-
-        [HttpPost]
-        public JsonResult AutoComplete(string term)
-        {
-            Firma1Entities2 db = new Firma1Entities2();
-            List<string> Employees = db
-               .EmployeesFulls
-               .Where(p => p.FullName.ToLower().Contains(term.ToLower()))
-               .Select(p => p.FullName)
-               .ToList();
-            return Json(Employees, JsonRequestBehavior.AllowGet);
-        }
+        }        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
