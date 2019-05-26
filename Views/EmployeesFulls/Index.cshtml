@@ -8,7 +8,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-<h2>Index</h2>
+<h2>Employees</h2>
 
 <head>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -28,6 +28,25 @@
 
     $(function () {
             $("#startDate").datepicker()
+    });
+    $(document).ready(function () {
+            $("#btn2").click(function () {
+                var date = document.getElementById("startDate").value;
+                alert(date);
+                var f = {};
+                f.url = '@Url.Action("FilterOutTableAfterDate", "EmployeesFullsController")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ date });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("success");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+            });
         });
     </script>
 
@@ -35,10 +54,27 @@
 </head>
 
 
-@using (Html.BeginForm())
+
+
+@using (Html.BeginForm("Index", "EmployeesFulls"))
 {
-    <b>Start Date: </b>
-    @Html.TextBox("startDate", null, new { id = "startDate" })
+<p>
+    Select employees who started after: @Html.TextBox("startDate", null, new { id = "startDate" })
+    <input type="submit" value="Filter" />
+    Search for employee: @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
+    <input type="submit" value="Search" />
+</p>
+}
+
+
+@using (Html.BeginForm("FilterOutTableAfterDate","EmployeesFullsController"))
+{
+    /*
+     @Html.ActionLink("Filter by date", "FilterOutTableAfterDate", "EmployeesFullsController") 
+      
+     
+    //<b>Start Date: </b>
+    //@Html.TextBox("startDate", null, new { id = "startDate" })
 
     <select asp-for="startDate" input type="submit" Text="startDate" value="startDate" id="btn2" />
     <b>Name: </b>
@@ -50,9 +86,10 @@
 
 
 
-    //@Html.TextBox("searchTerm", null, new { id = "txtSearch" })
+//@Html.TextBox("searchTerm", null, new { id = "txtSearch" })
 
     //<input type="submit" value="Search" />
+     */
 }
 
 <table class="table">

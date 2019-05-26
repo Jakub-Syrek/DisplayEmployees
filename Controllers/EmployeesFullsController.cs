@@ -15,15 +15,21 @@ namespace DisplayEmployees.Controllers
     {
         private Firma1Entities2 db = new Firma1Entities2();
         List<EmployeesFull> lista = new List<EmployeesFull>();
+        
+        /*
         // GET: EmployeesFulls
         public async Task<ActionResult> Index()
         {
             return View(await db.EmployeesFulls.ToListAsync());
         }
+        */
+
+
         //Post: EmployeesFulls
-        [HttpPost]
+        
         public async Task<ActionResult> Index(string searchTerm)
         {
+
 
             if (string.IsNullOrEmpty(searchTerm))
             {
@@ -36,6 +42,31 @@ namespace DisplayEmployees.Controllers
 
 
             return View(lista);
+        }
+        [HttpPost]
+        public async Task<ActionResult> Index(string? searchTerm , string? startDate)
+        {            
+                if (string.IsNullOrEmpty(searchTerm))
+                {
+                    lista = await db.EmployeesFulls.ToListAsync();
+                
+                }
+                else
+                {
+                    lista = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
+                }
+                if (string.IsNullOrEmpty(startDate))
+                {
+                  //lista = await db.EmployeesFulls.ToListAsync();
+                }
+                else
+                {
+                DateTime date = DateTime.Parse(startDate);
+                lista = await db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToListAsync();
+                
+            }
+                return View(lista);
+         
         }
         // GET: EmployeesFulls/Details/5
         public async Task<ActionResult> Details(int? id)
@@ -152,6 +183,22 @@ namespace DisplayEmployees.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        [HttpPost]
+        public ViewResult FilterOutTableAfterDate(DateTime date)
+        {            
+                if (date != null)
+                {
+
+                    lista = db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToList();
+
+                }
+                else
+                {
+                    lista = db.EmployeesFulls.ToList();
+                }
+
+                return View(lista);            
         }
     }
 }

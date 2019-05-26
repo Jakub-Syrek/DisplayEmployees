@@ -11,28 +11,36 @@ namespace DisplayEmployees
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "EmployeesFulls", action = "Index", id = UrlParameter.Optional }
             );
             routes.MapRoute(
+                name: "IndexTwoParametrs",
+                url: "{controller}/{startDate}/{searchTerm}",
+                defaults: new { controller = "EmployeesFulls", action = "Index", startDate = UrlParameter.Optional, searchTerm = UrlParameter.Optional }
+            );
+            
+            
+            routes.MapRoute(
+                name: "SortByDate",
+                url: "{controller}/{FilterOutTableAfterDate}/{startDate}",
+                defaults: new { controller = "EmployeesFulls", action = "FilterOutTableAfterDate", startDate = UrlParameter.Optional, }
+            );
+            routes.MapRoute(
+                name: "SearchForName",
+                url: "{controller}/{action}/{searchTerm}",
+                defaults: new { controller = "EmployeesFulls", action = "Index", searchTerm = UrlParameter.Optional, }
+            );
 
-"Citysearch",
-
-"Find/{Country}/{state}",
-
-new { controller = "Home", action = " Find", Country = UrlParameter.Optional, state = UrlParameter.Optional }
-
-);
             routes.MapRoute(
                 name: "Default12",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
-            
+            );            
         }
     }
 }
