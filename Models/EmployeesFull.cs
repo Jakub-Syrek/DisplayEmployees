@@ -18,5 +18,7 @@ namespace DisplayEmployees.Models
         public string FullName { get; set; }
         public Nullable<System.DateTime> JoiningDate { get; set; }
         public Nullable<int> ReportingToID { get; set; }
+
+        public int[] ReportedBy { get; set; }
     }
 }
