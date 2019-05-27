@@ -187,6 +187,15 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="_Apka_photos\1.PNG" />
+    <Content Include="_Apka_photos\2.PNG" />
+    <Content Include="_Apka_photos\3.PNG" />
+    <Content Include="_Apka_photos\4.PNG" />
+    <Content Include="_Apka_photos\5.PNG" />
+    <Content Include="_Apka_photos\6.PNG" />
+    <Content Include="_Apka_photos\7.PNG" />
+    <Content Include="_Apka_photos\8.PNG" />
+    <Content Include="_Apka_photos\9.PNG" />
     <EntityDeploy Include="Models\DataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DataModel.Designer.cs</LastGenOutput>
